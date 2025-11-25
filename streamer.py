@@ -48,6 +48,7 @@ def main():
                     "-stream_loop", "-1",        # خلي الخلفية تعيد نفسها
                     "-re", "-i", bg_video_url,   # input 0 = الفيديو الخلفية
                     "-re", "-i", audio_url,      # input 1 = الصوت quranX
+                    "-ss", "23",
                     "-map", "0:v",               # خذ الفيديو فقط من input 0 (بدون صوته)
                     "-map", "1:a",               # خذ الصوت من input 1
                     "-shortest",                 # يوقف مع نهاية ملف الصوت
