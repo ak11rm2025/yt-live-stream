@@ -46,7 +46,7 @@ def main():
                 cmd = [
                     "ffmpeg",
                     "-stream_loop", "-1",
-                    "-re", "-ss", "23", "-i", bg_video_url,  # الفيديو يبدأ من الثانية 23
+                    "-re", "-ss", "25", "-i", bg_video_url,  # الفيديو يبدأ من الثانية 23
                     "-re", "-i", audio_url,                  # صوت القرآن
                     "-map", "0:v",
                     "-map", "1:a",
