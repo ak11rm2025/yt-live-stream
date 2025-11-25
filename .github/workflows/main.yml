@@ -1,0 +1,31 @@
+name: YouTube 24/7 Stream
+
+on:
+  workflow_dispatch:
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Install Python deps
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r requirements.txt
+
+      - name: Run streamer
+        env:
+          PLAYLIST_URL: ${{ secrets.PLAYLIST_URL }}
+          YT_STREAM_KEY: ${{ secrets.YT_STREAM_KEY }}
+          BG_VIDEO_URL: ${{ secrets.BG_VIDEO_URL }}
+        run: |
+          python3 streamer.py
