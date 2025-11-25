@@ -3,6 +3,7 @@ import time
 import subprocess
 import requests
 
+
 def main():
     playlist_url = os.environ.get("PLAYLIST_URL")
     yt_stream_key = os.environ.get("YT_STREAM_KEY")
@@ -38,15 +39,18 @@ def main():
                     continue
 
                 print(f"▶️ بدء بث المقطع: {title}")
-                print(f"🎧 الصوت: {audio_url}")
-                print(f"🎬 الخلفية: {bg_video_url}")
+                print(f"🎧 الصوت من: {audio_url}")
+                print(f"🎬 الخلفية من: {bg_video_url}")
 
+                # هنا ندمج فيديو الخلفية (فقط الصورة) مع صوت quranX
                 cmd = [
                     "ffmpeg",
-                    "-stream_loop", "-1",
-                    "-re", "-i", bg_video_url,
-                    "-re", "-i", audio_url,
-                    "-shortest",
+                    "-stream_loop", "-1",        # خلي الخلفية تعيد نفسها
+                    "-re", "-i", bg_video_url,   # input 0 = الفيديو الخلفية
+                    "-re", "-i", audio_url,      # input 1 = الصوت quranX
+                    "-map", "0:v",               # خذ الفيديو فقط من input 0 (بدون صوته)
+                    "-map", "1:a",               # خذ الصوت من input 1
+                    "-shortest",                 # يوقف مع نهاية ملف الصوت
                     "-c:v", "libx264",
                     "-preset", "veryfast",
                     "-c:a", "aac",
@@ -64,6 +68,7 @@ def main():
         except Exception as e:
             print("❌ خطأ:", e)
             time.sleep(10)
+
 
 if __name__ == "__main__":
     main()
